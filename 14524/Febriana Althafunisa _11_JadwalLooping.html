@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Pelajaran</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #DBF9FC;<div></div>; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Jadwal Pelajaran Umum</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Hari</th>
+                <th>Jam 1</th>
+                <th>Jam 2</th>
+                <th>Jam 3</th>
+                <th>Jam 4</th>
+                <th>Jam 5</th>
+                <th>Jam 6</th>
+                <th>Jam 7</th>
+                <th>Jam 8</th>
+                <th>Jam 9</th>
+                <th>Jam 10</th>
+            </tr>
+        </thead>
+        <tbody id="jadwal-table">
+        </tbody>
+    </table>
+
+    <script>
+        const jadwal = {
+            "Senin": ["Bahasa Inggris", "Bahasa Inggris", "PJOK", "PJOK", "Matematika", "Matematika", "Bahasa Indonesia", "Bahasa Indonesia", "Matematika", "Matematika"],
+            "Selasa": ["IPAS", "IPAS", "Matematika", "Matematika", "Bahasa Indonesia", "Bahasa Indonesia", "Simdig", "Simdig", "Simdig", "Simdig"],
+            "Rabu": ["Seni Budaya", "Seni Budaya", "Bahasa Indonesia", "BK", "Bahasa Inggris", "Bahasa Inggris", "Agama", "Agama", "Sejarah Indonesia", "Sejarah Indonesia"],
+            "Kamis": ["Bahasa Inggris", "Bahasa Inggris", "Seni Budaya", "Seni Budaya", "PJOK", "PJOK", "PJOK", "Bahasa Jawa", "Bahasa Jawa", "Bahasa Jawa"],
+            "Jumat": ["PPKN", "PPKN", "PPKN", "IPAS", "IPAS", "Agama", "Agama", "P5", "P5", "P5"]
+        };
+
+        const tbody = document.getElementById('jadwal-table');
+
+        for (const [hari, pelajaran] of Object.entries(jadwal)) {
+            const row = document.createElement('tr');
+            const hariCell = document.createElement('td');
+            hariCell.textContent = hari;
+            row.appendChild(hariCell);
+
+            pelajaran.forEach(pelajaranItem => {
+                const pelajaranCell = document.createElement('td');
+                pelajaranCell.textContent = pelajaranItem;
+                row.appendChild(pelajaranCell);
+            });
+
+            for (let i = pelajaran.length; i < 10; i++) {
+                const emptyCell = document.createElement('td');
+                emptyCell.textContent = "-";
+                row.appendChild(emptyCell);
+            }
+
+            tbody.appendChild(row);
+        }
+    </script>
+</body>
+</html>
