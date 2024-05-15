@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Menghitung Indeks Prestasi</title>
+	<style>
+		table {
+			border-collapse: collapse;
+		}
+		th, td {
+			border: 1px solid #ddd;
+			padding: 8px;
+			text-align: left;
+		}
+	</style>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet" />
+</head>
+<body class="w-full flex flex-col justify-center items-center font-mono">
+	<h1 class="my-5 mt-20 text-2xl">Menghitung Indeks Prestasi</h1>
+	<h1 id="notify" class="my-5 px-2 text-sm text-gray-800 bg-red-300 rounded-md hidden"></h1>
+	<h1 id="credit" class="my-2 px-2 text-sm text-gray-800 bg-green-300 rounded-md hidden"></h1>
+	<table>
+		<tr>
+			<th>Komponen</th>
+			<th>Bobot</th>
+			<th>Nilai</th>
+		</tr>
+		<tr>
+			<td>Quis</td>
+			<td>10%</td>
+			<td><input class="w-full px-2 rounded-md" min="0" max="100" type="number" name="quis" id="quis" placeholder="masukkan nilai"></td>
+		</tr>
+		<tr>
+			<td>Tugas</td>
+			<td>20%</td>
+			<td><input class="w-full px-2 rounded-md" min="0" max="100" type="number" name="tugas" id="tugas" placeholder="masukkan nilai"></td>
+		</tr>
+		<tr>
+			<td>UTS</td>
+			<td>30%</td>
+			<td><input class="w-full px-2 rounded-md" min="0" max="100" type="number" name="uts" id="uts" placeholder="masukkan nilai"></td>
+		</tr>
+		<tr>
+			<td>UAS</td>
+			<td>40%</td>
+			<td><input class="w-full px-2 rounded-md" min="0" max="100" type="number" name="uas" id="uas" placeholder="masukkan nilai"></td>
+		</tr>
+		<tr>
+			<td colspan="2">Indeks Prestasi</td>
+			<td id="indeks-presentasi">-</td>
+		</tr>
+		<tr>
+			<td colspan="2">Keterangan</td>
+			<td id="keterangan">Masukkan Value Data</td>
+		</tr>
+		<tr>
+			<td colspan="2">Nilai Akhir</td>
+			<td id="nilai-akhir">-</td>
+		</tr>
+        <tr>
+            <td colspan="2"><button onclick="reset()" class="w-full transition border-none outline-none hover:bg-gray-500 hover:text-white rounded-md">Reset</button></td>
+            <td><button type="submit" onclick="calculate()" class="w-full transition border-none outline-none hover:bg-gray-500 hover:text-white rounded-md">Update</button></td>
+        </tr>
+	</table>
+
+	<script>
+
+        var credit = "Candra";
+        var creditBool = false;
+
+        function reset() {
+            sendError(true);
+            let nilaiQuis = document.getElementById("quis");
+            let nilaiTugas = document.getElementById("tugas");
+            let nilaiUTS = document.getElementById("uts");
+            let nilaiUAS = document.getElementById("uas");
+            
+            nilaiQuis.classList.remove("bg-red-300");
+            nilaiTugas.classList.remove("bg-red-300");
+            nilaiUTS.classList.remove("bg-red-300");
+            nilaiUAS.classList.remove("bg-red-300");
+
+            document.getElementById("quis").value="";
+            document.getElementById("tugas").value="";
+            document.getElementById("uts").value="";
+            document.getElementById("uas").value="";
+            
+            document.getElementById("nilai-akhir").textContent = "-";
+            document.getElementById("indeks-presentasi").textContent = "-";
+            document.getElementById("keterangan").textContent = "Berhasil Direset";
+        }
+
+        // Gunakan Boolean "true" atau string kosong "" untuk menghapus Notify
+        function sendError(message) {
+            const elmt = document.getElementById("notify");
+
+            if (message === true || message === "") {
+                elmt.classList.add("hidden");
+                return;
+            }
+
+            elmt.classList.remove("hidden");
+            elmt.innerText=message;
+        }
+
+        // Cek kondisi jika ter-cancel karena error
+        function isCancelled() {
+            let nilaiQuis = document.getElementById("quis");
+            let nilaiTugas = document.getElementById("tugas");
+            let nilaiUTS = document.getElementById("uts");
+            let nilaiUAS = document.getElementById("uas");
+
+            let result = false;
+            let listError = [];
+
+            [nilaiQuis, nilaiTugas, nilaiUTS, nilaiUAS].forEach((nilai) => {
+                (nilai.value === "" ? (nilai.classList.add("bg-red-300"), listError.push(`nilai ${nilai.id} kosong`)) : null);
+                (+nilai.value > 100 ? (nilai.classList.add("bg-red-300"), listError.push(`${nilai.id} lebih dari 100`)) : null);
+                (+nilai.value < 0 ? (nilai.classList.add("bg-red-300"), listError.push(`${nilai.id} kurang dari 0`)) : null);
+                (+nilai.value >= 0 && +nilai.value <= 100 ? (nilai.classList.remove("bg-red-300")) : null);
+            });
+
+
+            (listError.length > 0 ? (
+                sendError(`Masalah Value: ${listError.join(", ")}`),
+                document.getElementById("nilai-akhir").textContent = "-",
+                document.getElementById("indeks-presentasi").textContent = "-",
+                document.getElementById("keterangan").textContent = "Nilai Invalid",
+                result=true
+            ) : sendError(true));
+
+            return result;
+        }
+
+        function calculate() {
+            let creditElmt = document.getElementById("credit");
+            (creditBool ? (
+                creditElmt.classList.remove("hidden"),
+                creditElmt.innerText="Credit: "+credit
+            ) : null);
+
+		    // calculate nilai akhir
+            let nilaiQuis = +document.getElementById("quis").value;
+            let nilaiTugas = +document.getElementById("tugas").value;
+            let nilaiUTS = +document.getElementById("uts").value;
+            let nilaiUAS = +document.getElementById("uas").value;
+            let nilaiAkhir = (nilaiQuis * 0.1) + (nilaiTugas * 0.2) + (nilaiUTS * 0.3) + (nilaiUAS * 0.4);
+
+            // cek kondisi
+            if (isCancelled()) return;
+
+            // calculate indeks prestasi
+            let indeksPrestasi;
+            (nilaiAkhir >= 80 && nilaiAkhir <= 100) ? (
+                indeksPrestasi = 'A',
+                keterangan = 'Lulus dengan Sangat Baik'
+            ) : (nilaiAkhir >= 68 && nilaiAkhir < 80) ? (
+                indeksPrestasi = 'B',
+                keterangan = 'Lulus dengan Baik'
+            ) : (nilaiAkhir >= 55 && nilaiAkhir < 68) ? (
+                indeksPrestasi = 'C',
+                keterangan = 'Lulus dengan Cukup'
+            ) : (nilaiAkhir >= 38 && nilaiAkhir < 55) ? (
+                indeksPrestasi = 'D',
+                keterangan = 'Lulus dengan Kurang'
+            ) : (
+                indeksPrestasi = 'F+',
+                keterangan = 'Tidak Lulus'
+            );
+
+            // update table
+            document.getElementById("nilai-akhir").textContent = nilaiAkhir*10/10;
+            document.getElementById("indeks-presentasi").textContent = indeksPrestasi;
+            document.getElementById("keterangan").textContent = keterangan;
+        }
+	</script>
+</body>
+</html>
