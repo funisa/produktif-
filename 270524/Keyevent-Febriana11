@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <!-- Menambahkan judul untuk halaman HTML -->
+    <title>HTML DOM Events</title>
+</head>
+<body>
+    <!-- Menambahkan heading utama -->
+    <h1>HTML DOM Events</h1>
+    <!-- Menambahkan subjudul -->
+    <h2>The onkeydown Event</h2>
+    
+    <!-- Menjelaskan fungsionalitas event yang akan terjadi pada input -->
+    <p>
+        ketika di tekan dan tahan kebawah background inputan akan berubah warna menjadi merah,
+        ketika melepaspnya akan berubah ke hijau,
+        ketika cuma ditahan akan berubah warna menjadi kuning
+    </p>
+
+    <!-- Label untuk input -->
+    <label for="demo"></label>
+    <!-- Input text dengan event onkeydown, onkeyup, dan onkeypress -->
+    <!-- onkeyup untuk menangkap dan merespons input dari keyboard
+     onkeydown untuk berbagai interaksi seperti navigasi dengan keyboard 
+     onkeypress untuk menekan tombol pada keyboard,tetapi hanya untuk karakter yang dapat ditampilkan,  -->
+    <input type="text" id="demo"
+           onkeydown="keydown()"
+           onkeyup="keyup()"
+           onkeypress="keypress()">
+
+    <!-- Menambahkan script JavaScript -->
+    <script>
+        // Fungsi yang akan dijalankan saat tombol ditekan dan ditahan
+        function keydown() {
+            // Mengubah warna background input menjadi merah
+            document.getElementById("demo").style.backgroundColor = "red";
+        }
+
+        // Fungsi yang akan dijalankan saat tombol dilepaskan
+        function keyup() {
+            // Mengubah warna background input menjadi hijau
+            document.getElementById("demo").style.backgroundColor = "green";
+        }
+
+        // Fungsi yang akan dijalankan saat tombol ditekan
+        function keypress() {
+            // Mengubah warna background input menjadi kuning
+            document.getElementById("demo").style.backgroundColor = "yellow";
+        }
+    </script>
+</body>
+</html>
