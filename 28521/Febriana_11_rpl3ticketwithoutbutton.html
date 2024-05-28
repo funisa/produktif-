@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pembelian Tiket</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pembelian Tiket</h1>
+    <div class="form-group">
+        <label for="destination">Pilih Tujuan:</label>
+        <select id="destination">
+            <option value="100000" data-name="Jakarta">Jakarta - Rp 100,000</option>
+            <option value="150000" data-name="Bandung">Bandung - Rp 150,000</option>
+            <option value="200000" data-name="Yogyakarta">Yogyakarta - Rp 200,000</option>
+            <option value="250000" data-name="Bali">Bali - Rp 250,000</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="quantity">Jumlah Tiket:</label>
+        <input type="number" id="quantity" min="1" value="1" oninput="calculateTotal()">
+    </div>
+    <div id="result">
+        <h2>Hasil Pembelian</h2>
+        <p id="selectedDestination">Tujuan: -</p>
+        <p id="selectedQuantity">Jumlah Tiket: -</p>
+        <p id="totalPrice">Total Harga: Rp 0</p>
+    </div>
+
+    <script>
+        function calculateTotal() {
+            // Mendapatkan elemen tujuan dan jumlah tiket
+            const destinationSelect = document.getElementById('destination');
+            const destinationValue = destinationSelect.value;
+            const destinationName = destinationSelect.options[destinationSelect.selectedIndex].getAttribute('data-name');
+            const quantity = document.getElementById('quantity').value;
+
+            
+            const totalPrice = destinationValue * quantity;
+
+            // Menampilkan hasil pembelian
+            document.getElementById('selectedDestination').innerText = 'Tujuan: ' + destinationName;
+            document.getElementById('selectedQuantity').innerText = 'Jumlah Tiket: ' + quantity;
+            document.getElementById('totalPrice').innerText = 'Total Harga: Rp ' + parseInt(totalPrice).toLocaleString('id-ID');
+        }
+        
+        window.onload = calculateTotal;
+    </script>
+</body>
+</html>
