@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" http-equiv="X-UA-Compatible" content="IE=edge, width=device-width, initial-scale=1.0"
+          name="viewport">
+    <style>
+        table {
+            border-collapse: collapse;
+        }
+
+        th{
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+            background-color: aqua;
+        } td {
+              border: 1px solid #ddd;
+              padding: 8px;
+              text-align: left;
+          }
+    </style>
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet"/>
+    <title>Nilai</title>
+</head>
+<body class="w-full flex flex-col justify-center items-center font-mono">
+<h1 class="my-5 mt-20 text-2xl">Menghitung Indeks Prestasi</h1>
+<h1 id="notify" class="my-5 px-2 text-sm text-gray-800 bg-red-300 rounded-md hidden"></h1>
+<h1 id="credit" class="my-2 px-2 text-sm text-gray-800 bg-green-300 rounded-md hidden"></h1>
+<table onsubmit="return">
+    <tr>
+        <th>Komponen</th>
+        <th>Bobot</th>
+        <th>Nilai</th>
+    </tr>
+    <tr>
+        <td>Quis</td>
+        <td>10%</td>
+        <td><input class="w-full px-2 rounded-md" min="0" max="100" type="number" name="quis" id="quis"
+                   onchange="calculate()"placeholder="masukkan nilai"></td>
+    </tr>
+    <!-- onchange dan onkeyup adalah dua event handler di JavaScript yang digunakan untuk menangani interaksi dengan elemen input -->
+    <!-- Onkeyup Dipicu setiap kali pengguna melepaskan tombol pada keyboard saat mengetik di input. -->
+    <!-- Onchange Dipicu saat nilai elemen input berubah dan elemen tersebut kehilangan fokus.
+ -->
+    <tr>
+        <td>Tugas</td>
+        <td>20%</td>
+        <td><input class="w-full px-2 rounded-md" min="0" max="100" type="number" name="tugas" id="tugas"
+                   onchange="calculate()" placeholder="masukkan nilai"></td>
+    </tr>
+    <!-- Onchange Biasanya digunakan untuk memproses data input setelah pengguna selesai mengetik dan pindah ke elemen lain.-->
+    <!-- Onkeyup Digunakan untuk menangani input secara real-time, memberikan umpan balik langsung saat pengguna mengetik.-->
+        <tr>
+        <td>UTS</td>
+        <td>30%</td>
+        <td><input class="w-full px-2 rounded-md" min="0" max="100" type="number" name="uts" id="uts"
+                   onchange="calculate()" placeholder="masukkan nilai"></td>
+    </tr>
+    <!-- onchange berguna untuk situasi di mana Anda memerlukan tindakan setelah input selesai, sedangkan onkeyup berguna untuk memberikan feedback langsung saat pengguna sedang mengetik.-->
+    <tr>
+        <td>UAS</td>
+        <td>40%</td>
+        <td><input class="w-full px-2 rounded-md" min="0" max="100" type="number" name="uas" id="uas"
+                   onchange="calculate()" placeholder="masukkan nilai"></td>
+    </tr>
+    <tr>
+        <td colspan="2">Indeks Prestasi</td>
+        <td id="indeks-presentasi">-</td>
+    </tr>
+    <tr>
+        <td colspan="2">Keterangan</td>
+        <td id="keterangan">Masukkan Value Data</td>
+    </tr>
+    <tr>
+        <td colspan="2">Nilai Akhir</td>
+        <td id="nilai-akhir">-</td>
+    </tr>
+    <tr>
+        <td colspan="3">
+            <button onclick="reset()"
+                    class="w-full transition border-none outline-none hover:bg-gray-500 hover:text-white rounded-md">
+                Reset
+            </button>
+        </td>
+    </tr>
+</table>
+</body>
+
+<script>
+
+    var credit = "Nama";
+    var creditBool = false;
+
+    function reset() {
+        sendError(true);
+        let nilaiQuis = document.getElementById("quis");
+        let nilaiTugas = document.getElementById("tugas");
+        let nilaiUTS = document.getElementById("uts");
+        let nilaiUAS = document.getElementById("uas");
+
+        nilaiQuis.classList.remove("bg-red-300");
+        nilaiTugas.classList.remove("bg-red-300");
+        nilaiUTS.classList.remove("bg-red-300");
+        nilaiUAS.classList.remove("bg-red-300");
+
+        document.getElementById("quis").value = "";
+        document.getElementById("tugas").value = "";
+        document.getElementById("uts").value = "";
+        document.getElementById("uas").value = "";
+
+        document.getElementById("nilai-akhir").textContent = "-";
+        document.getElementById("indeks-presentasi").textContent = "-";
+        document.getElementById("keterangan").textContent = "Berhasil Direset";
+    }
+
+    // Gunakan Boolean "true" atau string kosong "" untuk menghapus Notify
+    function sendError(message) {
+        const elmt = document.getElementById("notify");
+
+        message === true || message === "" ? (
+            elmt.classList.add("hidden")
+        ) : (
+            elmt.classList.remove("hidden"),
+                elmt.innerText = message
+        );
+    }
+
+    // Cek kondisi jika ter-cancel karena error
+    function isCancelled() {
+        let nilaiQuis = document.getElementById("quis");
+        let nilaiTugas = document.getElementById("tugas");
+        let nilaiUTS = document.getElementById("uts");
+        let nilaiUAS = document.getElementById("uas");
+
+        let result = false;
+        let listError = [];
+
+        [nilaiQuis, nilaiTugas, nilaiUTS, nilaiUAS].forEach((nilai) => {
+            nilai.value === "" ? (nilai.classList.add("bg-red-300"), listError.push(`nilai ${nilai.id} kosong`)) : null;
+            +nilai.value > 100 ? (nilai.classList.add("bg-red-300"), listError.push(`${nilai.id} lebih dari 100`)) : null;
+            +nilai.value < 0 ? (nilai.classList.add("bg-red-300"), listError.push(`${nilai.id} kurang dari 0`)) : null;
+            +nilai.value >= 0 && +nilai.value <= 100 ? (nilai.classList.remove("bg-red-300")) : null;
+        });
+
+
+        listError.length > 0 ? (
+            sendError(`Masalah Value: ${listError.join(", ")}`),
+                document.getElementById("nilai-akhir").textContent = "-",
+                document.getElementById("indeks-presentasi").textContent = "-",
+                document.getElementById("keterangan").textContent = "Nilai Invalid",
+                result = true
+        ) : sendError(true);
+
+        return result;
+    }
+
+    function calculate() {
+        let creditElmt = document.getElementById("credit");
+        (creditBool ? (
+            creditElmt.classList.remove("hidden"),
+                creditElmt.innerText = "Credit: " + credit
+        ) : null);
+
+        // calculate nilai akhir
+        let nilaiQuis = +document.getElementById("quis").value;
+        let nilaiTugas = +document.getElementById("tugas").value;
+        let nilaiUTS = +document.getElementById("uts").value;
+        let nilaiUAS = +document.getElementById("uas").value;
+        let nilaiAkhir = (nilaiQuis * 0.1) + (nilaiTugas * 0.2) + (nilaiUTS * 0.3) + (nilaiUAS * 0.4);
+        let indeksPrestasi;
+
+        // cek kondisi
+        isCancelled() ? null : (
+            // calculate indeks prestasi
+            nilaiAkhir >= 80 && nilaiAkhir <= 100 ? (
+                indeksPrestasi = 'A',
+                    keterangan = 'Lulus dengan Sangat Baik'
+            ) : nilaiAkhir >= 68 && nilaiAkhir < 80 ? (
+                indeksPrestasi = 'B',
+                    keterangan = 'Lulus dengan Baik'
+            ) : nilaiAkhir >= 55 && nilaiAkhir < 68 ? (
+                indeksPrestasi = 'C',
+                    keterangan = 'Lulus dengan Cukup'
+            ) : nilaiAkhir >= 38 && nilaiAkhir < 55 ? (
+                indeksPrestasi = 'D',
+                    keterangan = 'Lulus dengan Kurang'
+            ) : (
+                indeksPrestasi = 'F+',
+                    keterangan = 'Tidak Lulus'
+            ),
+
+                // update table
+                document.getElementById("nilai-akhir").textContent = nilaiAkhir * 10 / 10,
+                document.getElementById("indeks-presentasi").textContent = indeksPrestasi,
+                document.getElementById("keterangan").textContent = keterangan
+        );
+    }
+</script>
+</html>
