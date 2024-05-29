@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jadwal Pelajaran</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #result {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body>
+    <h1>Pelajaran Umum</h1>
+    <div class="form-group">
+        <label for="name">Nama:</label>
+        <input type="text" id="name" placeholder="Masukkan Nama" oninput="displaySchedule()">
+    </div>
+    <div class="form-group">
+        <label for="class">Pilih Kelas Jurusan:</label>
+        <select id="class" onchange="displaySchedule()">
+            <option value="">Kelas</option>
+            <option value="XRPL1">XRPL1</option>
+            <option value="XRPL2">XRPL2</option>
+            <option value="XRPL3">XRPL3</option>
+            <option value="XTKJ3">XTKJ3</option>
+            <option value="XTKJ4">XTKJ4</option>
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="day">Pilih Hari:</label>
+        <select id="day" onchange="displaySchedule()">
+            <option value="">Hari</option>
+            <option value="Senin">Senin</option>
+            <option value="Selasa">Selasa</option>
+            <option value="Rabu">Rabu</option>
+            <option value="Kamis">Kamis</option>
+            <option value="Jumat">Jumat</option>
+        </select>
+    </div>
+
+    <div id="result">
+        <h2>Jadwal Pelajaran</h2>
+        <p id="studentName">Nama: -</p>
+        <p id="selectedClass">Kelas: -</p>
+        <p id="selectedDay">Hari: -</p>
+        <p id="schedule">Jadwal: -</p>
+    </div>
+
+    <script>
+        function displaySchedule() {
+    // Elemen nama, kelas, dan hari
+            const name = document.getElementById('name').value;
+            const classSelect = document.getElementById('class');
+            const classValue = classSelect.value;
+            const daySelect = document.getElementById('day');
+            const day = daySelect.value;
+
+    // Menentukan Pelajaran di Kelas dengan Switch
+            let schedule = '';
+            if (classValue === 'XRPL1') {
+      switch (day) {
+        case 'Senin':
+                        schedule = 'Bahasa Indonesia, Olahraga, Seni, Bahasa Inggris, Matematika';
+                        break;
+        case 'Selasa':
+                        schedule = 'Bahasa Indonesia, Bahasa Jawa, IPAS, Agama, Sejarah';
+                        break;
+        case 'Rabu':
+                        schedule = 'Bahasa Inggris, BK, Olahraga, Agama, Matematika';
+                        break;
+        case 'Kamis':
+                        schedule = 'Bahasa inggris, Bahasa Jawa, Seni, Informatika';
+                        break;
+        case 'Jumat':
+                        schedule = 'Matematika, IPAS, PPKN, P5';
+                        break;
+                    default:
+                        schedule = '-';
+                        break;
+                }
+         } else if (classValue === 'XRPL2') {
+       switch (day) {
+         case 'Senin':
+                        schedule = 'IPAS, Matematika, Bahasa Inggris, Informatika';
+                        break;
+         case 'Selasa':
+                        schedule = 'Seni, Sejarah, BK, Olahraga, Bahasa Inggris';
+                        break;
+         case 'Rabu':
+                        schedule = 'Olahraga, Matematika, PPKN, Bahasa Indonesia';
+                        break;
+         case 'Kamis':
+                        schedule = 'Seni, Bahasa Inggris, Bahasa Jawa, Bahasa Indonesia, Agama';
+                        break;
+         case 'Jumat':
+                        schedule = 'Bahasa Indonesia, Agama, IPAS, Matematika, P5';
+                        break;
+                    default:
+                        schedule = '-';
+                        break;
+                }
+         } else if (classValue === 'XRPL3') {
+        switch (day) {
+          case 'Senin':
+                        schedule = 'Bahasa Inggris, Olahraga, Matematika, Bahasa Indonesia, Matematika';
+                        break;
+          case 'Selasa':
+                        schedule = 'IPAS, Matematika, Bahasa Indonesia, Informatika';
+                        break;
+          case 'Rabu':
+                        schedule = 'Seni, Bahasa Indonesia, BK, Bahasa Inggris, Agama, Sejarah';
+                        break;
+          case 'Kamis':
+                        schedule = 'Bahasa Inggris, Seni, Olahraga, Bahasa Jawa';
+                        break;
+          case 'Jumat':
+                        schedule = 'PPKN, IPAS, Agama, P5';
+                        break;
+                    default:
+                        schedule = '-';
+                        break;
+                }
+            }
+           else if (classValue === 'XTKJ3') {
+        switch (day) {
+          case 'Senin':
+                        schedule = 'Bahasa Inggris, Agama, Bahasa Jawa, BK, IPAS';
+                        break;
+          case 'Selasa':
+                        schedule = 'Bahasa inggris, Agama, Matematika, Sejarah, Bahasa Indonesia';
+                        break;
+          case 'Rabu':
+                        schedule = 'Matematika, Bahasa Indonesia, PPKN, Seni, Bahasa Inggris';
+                        break;
+          case 'Kamis':
+                        schedule = 'Olahraga, Informatika, IPAS, Bahasa Indonesia';
+                        break;
+          case 'Jumat':
+                        schedule = 'Olahraga, Matematika, Seni, P5';
+                        break;
+                    default:
+                        schedule = '-';
+                        break;
+                }
+            }
+else if (classValue === 'XTKJ4') {
+        switch (day) {
+          case 'Senin':
+                        schedule = 'Informatika, Agama, Matematika, Bahasa Inggris';
+                        break;
+          case 'Selasa':
+                        schedule = 'PPKN, Bahasa Indonesia, Sejarah, Matematika, Agama';
+                        break;
+          case 'Rabu':
+                        schedule = 'Seni, PPKN, BK, Bahasa Inggris, IPAS';
+                        break;
+          case 'Kamis':
+                        schedule = 'Bahasa Indonesia, Matematika, Bahasa Inggris, Seni, Olahraga';
+                        break;
+          case 'Jumat':
+                        schedule = 'IPAS, Bahasa Indonesia, Olahraga, P5';
+                        break;
+                    default:
+                        schedule = '-';
+                        break;
+                }
+            }
+// Menampilkan hasil 
+      document.getElementById('studentName').innerText = 'Nama: ' + (name || '-');
+            document.getElementById('selectedClass').innerText = 'Kelas: ' + classValue;
+            document.getElementById('selectedDay').innerText = 'Hari: ' + day;
+            document.getElementById('schedule').innerText = 'Pelajaran: ' + schedule;
+        }
+
+        // Inisialisasi hasil awal saat halaman dimuat
+        window.onload = displaySchedule;
+    </script>
+</body>
+</html>
